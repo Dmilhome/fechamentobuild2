@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Dados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: left;
+        }
+        h1, h2, label {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .data-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .highlight {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+        .code {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Dados</h1>
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" placeholder="Digite a senha">
+        <button onclick="verificarSenha()">Acessar</button>
+        <div class="result" id="dadosFechamento"></div>
+    </div>
+
+    <script>
+        function verificarSenha() {
+            const senha = document.getElementById('senha').value;
+            if (senha === 'Jesus@1000') {
+                const dados = JSON.parse(localStorage.getItem('dadosFechamentoCaixa'));
+                if (dados) {
+                    const dadosFechamento = document.getElementById('dadosFechamento');
+                    const resultadoClass = dados.resultado.includes('Faltou') ? 'negative' : 'positive';
+                    dadosFechamento.innerHTML = `
+                        <h2>Dados do Fechamento de Caixa:</h2>
+                        <div class="data-item"><strong>Fundo:</strong> R$ ${dados.fundo}</div>
+                        <div class="data-item"><strong>Vendas:</strong> R$ ${dados.vendas}</div>
+                        <div class="data-item highlight"><strong>Total 01:</strong> R$ ${dados.total01}</div>
+                        <div class="data-item"><strong>Cédula:</strong> R$ ${dados.cedula}</div>
+                        <div class="data-item"><strong>Moedas:</strong> R$ ${dados.moedas}</div>
+                        <div class="data-item"><strong>Cartão:</strong> R$ ${dados.cartao}</div>
+                        <div class="data-item"><strong>Pix:</strong> R$ ${dados.pix}</div>
+                        <div class="data-item"><strong>Sangria:</strong> R$ ${dados.sangria}</div>
+                        <div class="data-item"><strong>Rota:</strong> R$ ${dados.rota}</div>
+                        <div class="data-item"><strong>Canceladas:</strong> R$ ${dados.canceladas}</div>
+                        <div class="data-item"><strong>Gasolina:</strong> R$ ${dados.gasolina}</div>
+                        <div class="data-item"><strong>Depósito:</strong> R$ ${dados.deposito}</div>
+                        <div class="data-item"><strong>Loja:</strong> R$ ${dados.loja}</div>
+                        <div class="data-item"><strong>Vale:</strong> R$ ${dados.vale}</div>
+                        <div class="data-item"><strong>Diárias:</strong> R$ ${dados.diarias}</div>
+                        <div class="data-item highlight"><strong>Total 02:</strong> R$ ${dados.total02}</div>
+                        <div class="data-item highlight ${resultadoClass}"><strong>Resultado:</strong> ${dados.resultado}</div>
+                        <div class="code">Código do Usuário: ${dados.userCode}</div>
+                    `;
+                } else {
+                    document.getElementById('dadosFechamento').innerHTML = 'Nenhum dado encontrado.';
+                }
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
+    </script>
+</body>
+</html>
